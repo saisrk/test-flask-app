@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  testapp:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5000
+    environment:
+      - FLASK_ENV=development
+      - APP_SETTINGS=testapp.config.DevelopmentConfig
+      - DATABASE_URL=postgres://postgres:postgres@testapp-db:5432/testapp_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@testapp-db:5432/testapp_test
+    depends_on:
+      - testapp-db
+
+  testapp-db:
+    build:
+      context: ./src/testapp/database
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  nginx:
+    build:
+      context: ./src/testapp/nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - testapp

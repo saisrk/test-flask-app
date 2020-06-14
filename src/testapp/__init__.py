@@ -26,6 +26,10 @@ def create_app():
     app_settings = os.getenv('APP_SETTINGS')
     app.config.from_object(app_settings)
 
+    # import the models here
+    from testapp.app.users import models
+    from testapp.app.attendance import models
+
     # Initialising flask plugins including database
     db.init_app(app)
     cors.init_app(app)
@@ -35,9 +39,13 @@ def create_app():
     # to the application.
     from testapp.app import ping_blueprint
     from testapp.app.users.views import users_blueprint
+    from testapp.app.attendance.views import attendance_blueprint
+    from testapp.app.dashboard.views import dashboard_blueprint
 
     app.register_blueprint(ping_blueprint)
     app.register_blueprint(users_blueprint)
+    app.register_blueprint(attendance_blueprint)
+    app.register_blueprint(dashboard_blueprint)
 
     @app.shell_context_processor
     def ctx():

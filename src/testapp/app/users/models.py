@@ -2,6 +2,7 @@ from datetime import datetime
 
 from testapp import db
 from testapp.common.db import TimestampMixin
+from testapp.app.attendance.models import Attendance
     
 
 class User(TimestampMixin, db.Model):
@@ -11,13 +12,15 @@ class User(TimestampMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     name = db.Column(db.String(80), unique=True, nullable=False)
     slug = db.Column(db.String(80), unique=True, nullable=False)
-    pseudoname = db.Column(db.String(80), unique=True, nullable=False)
+    pseudoname = db.Column(db.String(80), unique=True, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=True)
     phone_number = db.Column(db.String(120), unique=True, nullable=True)
     samithi_id = db.Column(db.Integer, db.ForeignKey('samithi.id'), nullable=True)
-    samithi = db.relationship('Samithi', backref=db.backref('user', lazy=True))
+
     user_type_id = db.Column(db.Integer, db.ForeignKey('user_types.id'), nullable=False)
     user_type = db.relationship('Usertype', backref=db.backref('user', lazy=True))
+    samithi = db.relationship('Samithi', backref=db.backref('user', lazy=True))
+    attendance = db.relationship('Attendance', backref=db.backref('user', lazy=True))
 
     def __repr__(self):
         return '<User %r>' % self.username

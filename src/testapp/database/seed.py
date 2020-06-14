@@ -1,11 +1,12 @@
-import json
+import json, os
 
 from testapp import db
 from testapp.app.users.models import Usertype, Samithi
 
+base_dir = os.path.dirname(os.path.realpath(__file__))
 
 def seed_samithis():
-    with open('seed_data/samithi.json', 'r') as samithi_fp:
+    with open(os.path.join(base_dir, 'seed_data', 'samithi.json'), 'r') as samithi_fp:
         samithi_data = json.load(samithi_fp)
         for samithi in samithi_data:
             samithi_instance = Samithi(
@@ -18,7 +19,7 @@ def seed_samithis():
 
 
 def seed_user_types():
-    with open('seed_data/user_types.json', 'r') as user_types_fp:
+    with open(os.path.join(base_dir, 'seed_data', 'user_types.json'), 'r') as user_types_fp:
         user_types_data = json.load(user_types_fp)
         for user_type in user_types_data:
             user_type_instance = Usertype(

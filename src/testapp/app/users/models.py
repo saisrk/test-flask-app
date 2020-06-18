@@ -1,11 +1,12 @@
 from datetime import datetime
+from flask_login import UserMixin, login_manager
 
 from testapp import db
 from testapp.common.db import TimestampMixin
 from testapp.app.attendance.models import Attendance
-    
 
-class User(TimestampMixin, db.Model):
+
+class User(TimestampMixin, UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -15,8 +16,9 @@ class User(TimestampMixin, db.Model):
     pseudoname = db.Column(db.String(80), unique=True, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=True)
     phone_number = db.Column(db.String(120), unique=True, nullable=True)
+    is_admin = db.Column(db.Boolean, default=False)
+    # authenticated = db.Column(db.Boolean, default=False)
     samithi_id = db.Column(db.Integer, db.ForeignKey('samithi.id'), nullable=True)
-
     user_type_id = db.Column(db.Integer, db.ForeignKey('user_types.id'), nullable=False)
     user_type = db.relationship('Usertype', backref=db.backref('user', lazy=True))
     samithi = db.relationship('Samithi', backref=db.backref('user', lazy=True))
@@ -58,3 +60,4 @@ class Samithi(db.Model):
 
     def __repr__(self):
         return '<Usertype %r>' % self.name
+

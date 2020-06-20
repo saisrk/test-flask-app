@@ -1,28 +1,32 @@
 from datetime import datetime
-from flask_login import UserMixin, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from testapp import db
 from testapp.common.db import TimestampMixin
-from testapp.app.attendance.models import Attendance
+from testapp.app.session.models import Attendance, Session
+from testapp.app.sadhana_sheet.models import UserSadhana
 
 
 class User(TimestampMixin, UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
     name = db.Column(db.String(80), unique=True, nullable=False)
     slug = db.Column(db.String(80), unique=True, nullable=False)
     pseudoname = db.Column(db.String(80), unique=True, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=True)
+    hashed_password = db.Column(db.String(120), nullable=False)
+    is_bhajan_vikas = db.Column(db.Boolean, default=False)
     phone_number = db.Column(db.String(120), unique=True, nullable=True)
-    is_admin = db.Column(db.Boolean, default=False)
-    # authenticated = db.Column(db.Boolean, default=False)
+    admin = db.Column(db.Boolean, default=False)
+    authenticated = db.Column(db.Boolean, default=False)
     samithi_id = db.Column(db.Integer, db.ForeignKey('samithi.id'), nullable=True)
     user_type_id = db.Column(db.Integer, db.ForeignKey('user_types.id'), nullable=False)
-    user_type = db.relationship('Usertype', backref=db.backref('user', lazy=True))
-    samithi = db.relationship('Samithi', backref=db.backref('user', lazy=True))
-    attendance = db.relationship('Attendance', backref=db.backref('user', lazy=True))
+    user_type = db.relationship('Usertype', backref=db.backref('users', lazy=True))
+    samithi = db.relationship('Samithi', backref=db.backref('users', lazy=True))
+    attendances = db.relationship('Attendance', backref=db.backref('users', lazy=True))
+    user_sadhana = db.relationship('UserSadhana', backref=db.backref('users', lazy=True))
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -38,6 +42,27 @@ class User(TimestampMixin, UserMixin, db.Model):
             'email': self.email,
             'user_type_id': self.user_type_id
         }
+
+    def is_active(self):
+        return True
+
+    def is_authenticated(self):
+        return self.is_authenticated
+
+    def is_anonymous(self):
+        return False
+
+    def is_admin(self):
+        return self.admin
+
+    def get_id(self):
+        return self.id
+
+    def set_password(self, password):
+        self.hashed_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)
 
 
 class Usertype(db.Model):

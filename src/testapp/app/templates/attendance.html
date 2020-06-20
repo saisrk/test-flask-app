@@ -1,3 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if attendance %}
+        <br><h1 style='text-align: center'><u>Attendance {{ session.name }}</u></h1><br><br>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Samithi</th>
+              <th scope="col">Bhajan vikas</th>
+              <th scope="col">Attendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in attendance %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+              <td>{{ row.users.name }}</td>
+              <td>{{ row.users.samithi.name }}</td>
+                <td>
+                    {% if row.users.is_bhajan_vikas %}
+                        <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                    {% else %}
+                        <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                    {% endif %}
+                </td>
+              <td>
+                  {% if row.status %}
+                        <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                    {% else %}
+                        <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                    {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% else %}
+        <h1>No attendance entered for this session</h1>
+    {% endif %}
 {% endblock %}

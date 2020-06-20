@@ -5,5 +5,8 @@
         <h1 class="display-4">Bhajan Vikas</h1>
         <p class="lead">Bha. Ra. Ta - Bhaavam . Raagam .  Taalam</p>
       </div>
-</div>
+    </div>
+    {% if current_user.is_authenticated %}
+      Hi {{ current_user.name }}!
+    {% endif %}
 {% endblock %}

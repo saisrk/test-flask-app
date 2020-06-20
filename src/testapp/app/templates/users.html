@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Users</h1>
+{% if current_user.is_authenticated %}
+      Hi {{ current_user.name }}!
+{% endif %}
+{% if users %}
+    {% for user in users %}
+        {{ user.name }}
+    {% endfor %}
+{% endif %}}
 {% endblock %}

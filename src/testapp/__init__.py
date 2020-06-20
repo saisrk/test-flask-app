@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_admin import Admin
+from flask_wtf.csrf import CSRFProtect
 import os
 
 db = SQLAlchemy()
@@ -11,6 +12,7 @@ cors = CORS()
 migrate = Migrate()
 login_manager = LoginManager()
 admin = Admin(name='Bhajan Vikas', template_mode='bootstrap3')
+csrf = CSRFProtect()
 
 
 def create_app():
@@ -22,7 +24,7 @@ def create_app():
     :return: app => application instance
     """
     # Create the flask application in application factory
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static', static_url_path='/static')
 
     # Use the configuration accordingly
     # TODO: Now only added Development config. Need to dynamically
@@ -32,7 +34,7 @@ def create_app():
 
     # import the models here
     from testapp.app.users import models
-    from testapp.app.attendance import models
+    from testapp.app.session import models
     from testapp.app.sadhana_sheet import models
 
     # Initialising flask plugins including database
@@ -41,22 +43,27 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     admin.init_app(app)
+    csrf.init_app(app)
 
     # Initialise the blueprints by registering them
     # to the application.
     from testapp.app import ping_blueprint
     from testapp.app.users.views import users_blueprint
-    from testapp.app.attendance.views import attendance_blueprint
+    from testapp.app.session.views import session_blueprint
     from testapp.app.dashboard.views import dashboard_blueprint
+    from testapp.app.sadhana_sheet.views import sadhana_sheet_blueprint
 
     from testapp.app.users.admin import users_admin
+    # from testapp.app.session.admin import attendance_admin
 
     app.register_blueprint(ping_blueprint)
     app.register_blueprint(users_blueprint)
-    app.register_blueprint(attendance_blueprint)
+    app.register_blueprint(session_blueprint)
     app.register_blueprint(dashboard_blueprint)
+    app.register_blueprint(sadhana_sheet_blueprint)
 
     app.register_blueprint(users_admin)
+    # app.register_blueprint(attendance_admin)
 
     @app.shell_context_processor
     def ctx():
@@ -66,6 +73,9 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.get(user_id)
+        try:
+            return User.query.get(user_id)
+        except:
+            return None
 
     return app

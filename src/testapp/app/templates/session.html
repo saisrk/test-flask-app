@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+            {% if upcoming %}
+              <h1 class="display-4">Upcoming session</h1><br>
+              <p class="lead">Sairam brothers,<br><br>
+
+With the divine grace of Bhagwan, we have virtual Bhajan Training session for Gents & Youth ( District level).<br>
+
+
+Request all the Samithi singers (Gents, youth &  Bhajan Vikas boys) to Join the session & lets all get the divine blessings of our Beloved Bhagwan.</p>
+                Date: <p>{{ upcoming.date }}</p><br>
+                Time: <p>{{ upcoming.start_time }}</p><br>
+                <a href="{{upcoming.url}}" target="_blank" class="btn btn-primary">Join Session</a>
+            {% endif %}
+
+            </div>
+      </div>
+
+      <div class="container">
+
+          {% if previous %}
+          <h1>Session List</h1>
+          <div class="row">
+                <div class="col">
+                      {% for session in previous %}
+                            <div class="card" style="width: 18rem; display: inline-block">
+                              <img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/SSB-086.jpg" class="card-img-top" alt="...">
+                              <div class="card-body">
+
+                                <h5 class="card-title">{{ session.name }}</h5>
+                                  <p class="card-text">
+                                      <span>Date: {{ session.date }}</span><br>
+                                      <span>Time: {{ session.start_time }}</span>
+                                  </p>
+                                  <div class="col" style="display: inline-block"><a href="/session/{{ session.id }}/attendance" class="btn btn-primary">View Attendance</a>
+                                  {% if session.old_session %}
+                                    <a href="/session/{{ session.id }}/edit_attendance" class="btn btn-primary">Edit Attendance</a>
+                                      {% endif %}
+                                  </div>
+
+                              </div>
+                            </div>
+                      {% endfor %}
+                    {% else %}
+                      <h2>No Previous Sessions Available</h2>
+                </div>
+              </div>
+          {% endif %}
+      </div>
+
+{% endblock %}

@@ -9,7 +9,7 @@ class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     session_id = db.Column(db.Integer, db.ForeignKey('session.id'), nullable=False)
-    status = db.Column(db.Integer, unique=True, nullable=False)
+    status = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
         return '<Attendance %r>' % self.status
@@ -24,8 +24,10 @@ class Session(db.Model):
     date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
+    old_session = db.Column(db.Boolean, default=False)
     url = db.Column(URLType, nullable=False)
-    summary = db.Column(db.Text, unique=True, nullable=False)
+    summary = db.Column(db.Text, default='', nullable=False)
+    attendances = db.relationship('Attendance',  backref=db.backref('session', lazy=True))
 
     def __repr__(self):
         return '<Session %r>' % self.name

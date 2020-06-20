@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <br><h1 style="text-align: center">{{ sadhana_sheet.name }}- {{ user }}</h1><br><br>
+    {% if sheet_data %}
+        <div class="table-responsive-lg">
+              <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sadhana Sheet</th>
+                        {% for date in all_dates %}
+                            <th>{{ date }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wake up at 6:00am</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_wakeup %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Do Prayer</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_prayer %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Breathing/Vocal Exercises</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_exercise %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Bhajan Listening & Practise</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_listen %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Do Namasmarana</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_namasmarana %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Drink Water</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_drink_water %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>No TV during food</td>
+                        {% for data in sheet_data %}
+                            <td>
+                                {% if data.do_no_tv %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/ok-16.ico"></span>
+                                {% else %}
+                                    <span><img src="https://bhajanvikas.s3.ap-south-1.amazonaws.com/x-mark-16.ico"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+              </table>
+        </div>
+    {% else %}
+        <h4> No data available for sheet</h4>
+    {% endif %}
+</div>
+{% endblock %}

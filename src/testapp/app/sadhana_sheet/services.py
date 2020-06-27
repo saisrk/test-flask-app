@@ -3,6 +3,7 @@ from werkzeug.exceptions import BadRequest
 
 from .models import SadhanaSheet, UserSadhana
 from testapp.app.users.models import User
+from testapp import db
 
 
 def get_all_sadhana_sheets():
@@ -53,5 +54,57 @@ def get_sadhana_sheet_data(sheet_id):
             })
     all_dates = [datetime.strptime(date, '%Y-%m-%d').day for date in all_dates]
     return all_dates, sheet_data, sadhana_sheet, user
+
+
+def get_sadhana_sheet_for_edit(sheet_id):
+    sadhana_sheet = SadhanaSheet.query.get(sheet_id)
+    all_dates = days_cur_month(sadhana_sheet.month, sadhana_sheet.year)
+    today = datetime.strftime(datetime.now(), '%Y-%m-%d')
+    if datetime.now().day == 1:
+        return [datetime.strptime(date, '%Y-%m-%d') for date in all_dates]
+    else:
+        return [datetime.strptime(date, '%Y-%m-%d') for date in all_dates[all_dates.index(today):]], sadhana_sheet
+
+
+def add_user_sadhana(sheet_id, date):
+    sadhana_sheet = SadhanaSheet.query.get(sheet_id)
+    return sadhana_sheet
+
+def save_user_sadhana(sheet_id, date, request_data):
+    sadhana_sheet = SadhanaSheet.query.get(sheet_id)
+    us_data = UserSadhana.query.filter_by(sadhana_sheet_id=sheet_id,
+                                          user_id=1, date=date)
+    do_wakeup = True if request_data.form.get('do_wakeup') == 'Yes' else False
+    do_prayer = True if request_data.form.get('do_prayer') == 'Yes' else False
+    do_exercise = True if request_data.form.get('do_exercise') == 'Yes' else False
+    do_listen = True if request_data.form.get('do_listen') == 'Yes' else False
+    do_namasmarana = True if request_data.form.get('do_namasmarana') == 'Yes' else False
+    do_drink_water = True if request_data.form.get('do_drink_water') == 'Yes' else False
+    do_no_tv = True if request_data.form.get('do_no_tv') == 'Yes' else False
+    if us_data:
+        us_data.do_wakeup = do_wakeup
+        us_data.do_prayer = do_prayer
+        us_data.do_exercise = do_exercise
+        us_data.do_listen = do_listen
+        us_data.do_namasmarana = do_namasmarana
+        us_data.do_drink_water = do_drink_water
+        us_data.do_no_tv = do_no_tv
+        db.session.commit()
+    else:
+        user_sadhana = UserSadhana(
+            sadhana_sheet_id=sheet_id,
+            user_id=1,
+            date=date,
+            do_wakeup=do_wakeup,
+            do_prayer=do_prayer,
+            do_exercise=do_exercise,
+            do_listen=do_listen,
+            do_namasmarana=do_namasmarana,
+            do_drink_water=do_drink_water,
+            do_no_tv=do_no_tv,
+        )
+        db.session.add(user_sadhana)
+        db.session.commit()
+
 
 

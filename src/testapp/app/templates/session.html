@@ -13,6 +13,7 @@ Request all the Samithi singers (Gents, youth &  Bhajan Vikas boys) to Join the 
                 Date: <p>{{ upcoming.date }}</p><br>
                 Time: <p>{{ upcoming.start_time }}</p><br>
                 <a href="{{upcoming.url}}" target="_blank" class="btn btn-primary">Join Session</a>
+                <a href="/session/{{ upcoming.id }}/edit_attendance" class="btn btn-warning">Edit Attendance</a>
             {% endif %}
 
             </div>

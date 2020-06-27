@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block css %}
+<style>
+    .form-group {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<h1 style="text-align: center">User Sadhana - {{ date.strftime('%A') }}, {{ date.day }} {{ date.strftime('%B') }} {{ date.year }}</h1>
+<div class="container"><br><br>
+    <form method="post" action="/sadhana_sheet/{{ sheet.id }}/edit/{{ date.strftime('%Y-%m-%d') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="wrapper">
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Wake up at 6:00 AM</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="do_wakeup">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Do Prayer</label>
+                <select class="form-control" id="exampleFormControlSelect2" name="do_prayer">
+                  <option>No</option>
+                    <option>Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect3">Breathing/Vocal Exercises</label>
+                <select class="form-control" id="exampleFormControlSelect3" name="do_exercise">
+                  <option>No</option>
+                    <option>Yes</option>
+                </select>
+              </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect4">Bhajan Listening & Practise</label>
+                <select class="form-control" id="exampleFormControlSelect4" name="do_practise">
+                  <option>No</option>
+                    <option>Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect5">Do Namasmarana</label>
+                <select class="form-control" id="exampleFormControlSelect5" name="do_namasmarana">
+                  <option>No</option>
+                    <option>Yes</option>
+                </select>
+              </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect6">Drink Water</label>
+                <select class="form-control" id="exampleFormControlSelect6" name="do_drink_water">
+                  <option>No</option>
+                    <option>Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect7">No TV during food</label>
+                <select class="form-control" id="exampleFormControlSelect7" name="do_no_tv">
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
+            </div>
+        <div class="container-fluid" style="text-align: center; margin: 20px">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

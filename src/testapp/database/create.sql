@@ -1,3 +1,1 @@
 create database testapp_dev
-create database testapp_test
-create database testapp_prod

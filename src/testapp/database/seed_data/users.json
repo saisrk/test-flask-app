@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Krishnan",
+    "email": "krishnan@foo.in"
+  },
+  {
+    "id": 2,
+    "name": "Ashok",
+    "email": "ashok@foo.in"
+  },
+  {
+    "id": 3,
+    "name": "Ashwin",
+    "email": "ashwin@foo.in"
+  },
+  {
+    "id": 4,
+    "name": "Hariharan",
+    "email": "hariharan@foo.in"
+  },
+  {
+    "id": 5,
+    "name": "Mani",
+    "email": "mani@foo.in"
+  },
+  {
+    "id": 6,
+    "name": "Varun",
+    "email": "varun@foo.in"
+  },
+  {
+    "id": 7,
+    "name": "Vignesh",
+    "email": "vignesh@foo.in"
+  }
+]
